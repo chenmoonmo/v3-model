@@ -1,18 +1,22 @@
 <template>
-  <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
-  </div>
+  <t-button @click="clickHandler"> 
+    <template #default>123</template>
+     </t-button>
+  <test-component v-if="isShow" :name="name" />
 </template>
 
-<script>
-// @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue'
-
-export default {
-  name: 'Home',
-  components: {
-    HelloWorld
+<script setup>
+import { ref, defineAsyncComponent } from "vue";
+import TButton from "../components/TButton.vue";
+const TestComponent = defineAsyncComponent(() =>
+  import("../components/TestComponent.vue")
+);
+const isShow = ref(false);
+const name = ref("");
+const clickHandler = async () => {
+  if (!isShow.value) {
+    name.value = (await prompt("请输入姓名")) ?? "world";
   }
-}
+  isShow.value = !isShow.value;
+};
 </script>
